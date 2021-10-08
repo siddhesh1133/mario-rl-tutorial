@@ -15,7 +15,7 @@ from baselines.acktr import kfac
 
 class Model(object):
 
-  def __init__(self, policy, ob_space, ac_space, nenvs, total_timesteps, nprocs=32, nsteps=20,
+  def __init__(self, policy, ob_space, ac_space, nenvs, total_timesteps, nprocs=52, nsteps=40,
                nstack=4, ent_coef=0.01, vf_coef=0.5, vf_fisher_coef=1.0, lr=0.25, max_grad_norm=0.5,
                kfac_clip=0.001, lrschedule='linear'):
     config = tf.ConfigProto(allow_soft_placement=True,
@@ -157,7 +157,7 @@ class Runner(object):
           #print("self.episode_rewards[-101:-1] %s" % self.episode_rewards[-101:-1])
           print("env %s done! reward : %s mean_100ep_reward : %s " % (n, self.total_reward[n], mean_100ep_reward))
           logger.record_tabular("reward", self.total_reward[n])
-          logger.record_tabular("mean 100 episode reward", mean_100ep_reward)
+          logger.record_tabular("mean 100-episodes reward", mean_100ep_reward)
           logger.record_tabular("steps", self.steps)
           logger.record_tabular("episodes", self.episodes)
           logger.dump_tabular()
@@ -219,8 +219,8 @@ def learn(policy,
           total_timesteps=int(40e6),
           gamma=0.99,
           log_interval=1,
-          nprocs=32,
-          nsteps=20,
+          nprocs=52,
+          nsteps=40,
           nstack=4,
           ent_coef=0.01,
           vf_coef=0.5,
@@ -274,7 +274,7 @@ def learn(policy,
       ev = explained_variance(values, rewards)
       logger.record_tabular("nupdates", update)
       logger.record_tabular("steps", update*nbatch)
-      logger.record_tabular("fps", fps)
+      logger.record_tabular("fps.", fps)
       logger.record_tabular("policy_entropy", float(policy_entropy))
       logger.record_tabular("policy_loss", float(policy_loss))
       logger.record_tabular("value_loss", float(value_loss))
